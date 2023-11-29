@@ -21,6 +21,7 @@
     </form>
 
     <table id="booksTable" border="2">
+
  <?php
     $originalTableContent ='';
 
@@ -50,7 +51,6 @@
         var searchTerm = document.getElementById('search').value;
 
         if (searchTerm === '') {
-            // If the search term is empty, display the original table
             document.getElementById('booksTable').innerHTML = originalTableContent;
             return;
         }
