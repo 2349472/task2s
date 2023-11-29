@@ -13,7 +13,6 @@ if ($mysqli->connect_errno) {
     exit();
 }
 
-
 $recordsPerPage = 8;
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $start = ($current_page - 1) * $recordsPerPage;
@@ -27,7 +26,7 @@ $searchTermRelease = '';
 $searchTermPrice = '';
 
 if (isset($_GET['filter'])) {
-	$searchTermId = '%' . $_GET['searchId'] . '%';
+    $searchTermId = '%' . $_GET['searchId'] . '%';
     $searchTermName = '%' . $_GET['searchName'] . '%';
     $searchTermAuthor = '%' . $_GET['searchAuthor'] . '%';
     $searchTermGenre = '%' . $_GET['searchGenre'] . '%';
@@ -38,29 +37,26 @@ if (isset($_GET['filter'])) {
     $query = "SELECT bookId, bookName, bookAuthor, bookGenre, bookRating, bookRelease, bookPrice 
               FROM Books 
               WHERE bookId LIKE ? AND 
-					bookName LIKE ? AND 
+                    bookName LIKE ? AND 
                     bookAuthor LIKE ? AND 
                     bookGenre LIKE ? AND 
                     bookRating LIKE ? AND 
                     bookRelease LIKE ? AND 
-                    bookPrice LIKE ?
-              LIMIT ?, ?";
-
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('sssssssii', $searchTermId, $searchTermName, $searchTermAuthor, $searchTermGenre, $searchTermRating, $searchTermRelease, $searchTermPrice, $start, $recordsPerPage);
-} else {
-    $query = "SELECT bookId, bookName, bookAuthor, bookGenre, bookRating, bookRelease, bookPrice 
-              FROM Books 
-              LIMIT ?, ?";
+                    bookPrice LIKE ?";
     
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param('ii', $start, $recordsPerPage);
+    $stmt->bind_param('sssssss', $searchTermId, $searchTermName, $searchTermAuthor, $searchTermGenre, $searchTermRating, $searchTermRelease, $searchTermPrice);
+} else {
+    $query = "SELECT bookId, bookName, bookAuthor, bookGenre, bookRating, bookRelease, bookPrice 
+              FROM Books";
+    
+    $stmt = $mysqli->prepare($query);
 }
 
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -101,9 +97,10 @@ $result = $stmt->get_result();
     }
     ?>
 </table>
+
 <h2>
-<p><a href="page1.php">Return to My Library</a>
-<a href="filterform.html">Filter again</a></p>
+    <p><a href="page1.php">Return to My Library</a>
+    <a href="filterform.html">Filter again</a></p>
 </h2>
 </body>
 </html>

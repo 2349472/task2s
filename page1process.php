@@ -24,15 +24,13 @@ if (isset($_GET['search'])) {
                     bookGenre LIKE ? OR 
                     bookRating LIKE ? OR 
                     bookRelease LIKE ? OR 
-                    bookPrice LIKE ?
-              LIMIT 8";
+                    bookPrice LIKE ?";
     
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param('ssssss', $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm);
 } else {
     $query = "SELECT bookId, bookName, bookAuthor, bookGenre, bookRating, bookRelease, bookPrice 
-              FROM Books 
-              LIMIT 8";
+              FROM Books";
     
     $stmt = $mysqli->prepare($query);
 }
@@ -45,7 +43,13 @@ while ($row = $result->fetch_assoc()) {
     $books[] = $row;
 }
 
-echo json_encode($books);
+if (isset($_GET['search'])) {
+    // Display JSON only if it's a search request
+    echo json_encode($books);
+} else {
+    // Display the table only if it's not a search request
+    include('page1form.php');
+}
 
 $mysqli->close();
 ?>
