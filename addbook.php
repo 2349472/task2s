@@ -66,7 +66,7 @@ $mysqli->close();
         <?php echo $popupMessage; ?>
     </div>
 <h2>
-    <p><a href="page1.php">Go back to My Library</a></p>
+    <p><a href="page1.php">Return to My Library</a></p>
 </h2>
 </h2>
 </body>
